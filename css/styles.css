@@ -13,10 +13,6 @@ select {
     margin-bottom: 0.5rem;
     width: 195.2px;
 }
-span {
-    line-height: 2;
-    padding: 10px;
-}
 table {
   border: 1px solid #b3adad;
   border-collapse: collapse;
