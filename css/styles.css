@@ -9,9 +9,9 @@ input {
   margin-bottom: 0.5rem;
 }
 select {
-    padding: 1rem 2.6rem;
+    padding: 1rem;
     margin-bottom: 0.5rem;
-    background-color: #fffbfb;
+    width: 195.2px;
 }
 span {
     line-height: 2;
