@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="icon" href="images/favicon.jpg">
+    <link rel="shortcut icon" href="images/favicon.jpg" type="image/x-icon">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather&family=Montserrat&family=Sacramento&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
+    <title>MVP Internship</title>
+</head>
+
+<body>
+    <h2>Details of Employee</h2>
+    <div class="container">
+        <input type="text" name="search" id="search" placeholder="Search by First_name, Last_name, etc">
+        <select name="searchUsing" id="searchUsing">
+            <option value="">--Search by--</option>
+            <option value="Emp_id">Emp_id</option>
+            <option value="First_name">First_name</option>
+            <option value="Last_name">Last_name</option>
+            <option value="Dept">Dept</option>
+        </select>
+        <div class="buttons2">
+            <button class="btn" id="searchBtn" onclick="search()">Search</button>
+            <button class="btn" onclick="getFullData()">Get Details of All Employees</button>
+        </div>
+    </div>
+    <div id="load"></div>
+    <table id="myTable">
+
+    </table>
+    <div id="buttons">
+
+    </div>
+    <script>
+        const myTable = document.getElementById('myTable');
+        const load = document.getElementById('load');
+        let buttons = document.getElementById('buttons');
+        function getFullData() {
+            myTable.innerHTML = '';
+            buttons.innerHTML = '';
+            load.innerHTML = '<img class="loadingImg" src="images/loading.gif" alt="loading">'
+            fetch(`https://script.google.com/macros/s/AKfycbyledgEzJSFTidtU2YmTmhzjp6Ml-sfgHOutbOmhZoycs66pqFM1DX8aUHT7LRtNwXVqw/exec`)
+                .then(res => {
+                    if (res.ok) { console.log("HTTP request successful") }
+                    else { console.log("HTTP request unsuccessful") }
+                    return res
+                })
+                .then(res => res.json())
+                .then(data => {
+
+                    let content = ``;
+                    data.data.forEach(element => {
+                        content += `<tr>
+            <td>${element.Emp_id}</td>
+            <td>${element.First_name}</td>
+            <td>${element.Last_name}</td>
+            <td>${element.Dept}</td>
+            <td>${element.Academic_score}</td>
+            <td>${element.Performance_score}</td>
+        </tr>`
+                    });
+                    load.innerHTML = '';
+                    myTable.innerHTML = content;
+                    buttons.innerHTML = `<button class="btn" onclick="exportTableToExcel('myTable', 'Employee Data')">Download Employee Data as Excel
+        File</button>
+    <button class="btn" onclick="downloadAsPdf('myTable', 'Employee Data')">Download Employee Data as Pdf File</button>`
+                })
+                .catch(error => console.log(error))
+        }
+
+        function search() {
+            myTable.innerHTML = '';
+            buttons.innerHTML = '';
+            let filterText = document.getElementById('search');
+            let filterTextValue = filterText.value;
+            let searchUsing = document.getElementById('searchUsing');
+            let searchUsingValue = searchUsing.value;
+            if ((searchUsingValue == '') & (filterTextValue != '')) {
+                load.innerHTML = 'Please select Search by from dropdown menu'
+            } else if ((searchUsingValue == '') & (filterTextValue == '')) {
+                getFullData();
+            } else {
+                load.innerHTML = '<img class="loadingImg" src="images/loading.gif" alt="loading">'
+                fetch(`https://script.google.com/macros/s/AKfycbyledgEzJSFTidtU2YmTmhzjp6Ml-sfgHOutbOmhZoycs66pqFM1DX8aUHT7LRtNwXVqw/exec?${searchUsingValue}=${filterTextValue}`)
+                    .then(res => {
+                        if (res.ok) { console.log("HTTP request successful") }
+                        else { console.log("HTTP request unsuccessful") }
+                        return res
+                    })
+                    .then(res => res.json())
+                    .then(data => {
+                        let content = '';
+                        let partialContent = `<tr>
+            <td>Emp_id</td>
+            <td>First_name</td>
+            <td>Last_name</td>
+            <td>Dept</td>
+            <td>Academic_score</td>
+            <td>Performance_score</td>
+        </tr>`;
+                        data.data.forEach(element => {
+                            content += `<tr>
+            <td>${element.Emp_id}</td>
+            <td>${element.First_name}</td>
+            <td>${element.Last_name}</td>
+            <td>${element.Dept}</td>
+            <td>${element.Academic_score}</td>
+            <td>${element.Performance_score}</td>
+        </tr>`
+                        });
+                        if (content != '') {
+                            load.innerHTML = '';
+                        myTable.innerHTML = partialContent + content;
+                        buttons.innerHTML = `<button class="btn" onclick="exportTableToExcel('myTable', 'Employee Data')">Download Employee Data as Excel
+        File</button>
+    <button class="btn" onclick="downloadAsPdf('myTable', 'Employee Data')">Download Employee Data as Pdf File</button>`
+                        } else {
+                            load.innerHTML = 'Detail not Found';
+                        }
+                        
+                    })
+                    .catch(error => {
+                        console.log(error);
+                        load.innerHTML = 'Detail not Found';
+                    })
+            }
+        }
+    </script>
+    <script src="js/html2pdf.bundle.min.js"></script>
+    <script src="js/index.js"></script>
+</body>
+
+</html>
