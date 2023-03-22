@@ -47,7 +47,7 @@
             myTable.innerHTML = '';
             buttons.innerHTML = '';
             load.innerHTML = '<img class="loadingImg" src="images/loading.gif" alt="loading">'
-            fetch(`https://script.google.com/macros/s/AKfycbyledgEzJSFTidtU2YmTmhzjp6Ml-sfgHOutbOmhZoycs66pqFM1DX8aUHT7LRtNwXVqw/exec`)
+            fetch(`https://script.google.com/macros/s/AKfycbyBaUywkERozkuoGL9-Aqd2YULHdadtES4N3_c8KTergMAD_jQG8Z7vF4fXTmKf4DupDA/exec`)
                 .then(res => {
                     if (res.ok) { console.log("HTTP request successful") }
                     else { console.log("HTTP request unsuccessful") }
@@ -89,7 +89,7 @@
                 getFullData();
             } else {
                 load.innerHTML = '<img class="loadingImg" src="images/loading.gif" alt="loading">'
-                fetch(`https://script.google.com/macros/s/AKfycbyledgEzJSFTidtU2YmTmhzjp6Ml-sfgHOutbOmhZoycs66pqFM1DX8aUHT7LRtNwXVqw/exec?${searchUsingValue}=${filterTextValue}`)
+                fetch(`https://script.google.com/macros/s/AKfycbyBaUywkERozkuoGL9-Aqd2YULHdadtES4N3_c8KTergMAD_jQG8Z7vF4fXTmKf4DupDA/exec?${searchUsingValue}=${filterTextValue}`)
                     .then(res => {
                         if (res.ok) { console.log("HTTP request successful") }
                         else { console.log("HTTP request unsuccessful") }
